@@ -6,17 +6,17 @@ def resolve_input_reads(wildcards):
   sample_number = sample_name_to_ogbf_number[wildcards.sample]
   return({
   'L1R1': ('data/reads/H2NVLBCX3-4261-'
-           '{sample_number:02}-01-01_'
-           'S{sample_number}_L001_R1_001.fastq.gz'),
+           f'{sample_number:02}-01-01_'
+           f'S{sample_number}_L001_R1_001.fastq.gz'),
   'L1R2': ('data/reads/H2NVLBCX3-4261-'
-           '{sample_number:02}-01-01_'
-           'S{sample_number}_L001_R2_001.fastq.gz'),
+           f'{sample_number:02}-01-01_'
+           f'S{sample_number}_L001_R2_001.fastq.gz'),
   'L2R1': ('data/reads/H2NVLBCX3-4261-'
-           '{sample_number:02}-01-01_'
-           'S{sample_number}_L002_R1_001.fastq.gz'),
+           f'{sample_number:02}-01-01_'
+           f'S{sample_number}_L002_R1_001.fastq.gz'),
   'L2R2': ('data/reads/H2NVLBCX3-4261-'
-           '{sample_number:02}-01-01_'
-           'S{sample_number}_L002_R2_001.fastq.gz')})
+           f'{sample_number:02}-01-01_'
+           f'S{sample_number}_L002_R2_001.fastq.gz')})
 
 sample_name_to_ogbf_number = {
   'AI': 1,
