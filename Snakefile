@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import multiprocessing
+
 #map ogbf numbers to samples names so that in future can refer to sample names
 
 def resolve_input_reads(wildcards):
@@ -55,6 +57,8 @@ rule trim_adaptors:
   log:
     r='output/logs/010_trim/{sample}_repair.log',
     b='output/logs/010_trim/{sample}_bbduk.log'
+  threads:
+    1
   singularity:
     bbmap
   shell:
@@ -65,6 +69,7 @@ rule trim_adaptors:
     '2>{log.r} '
     '| '
     'bbduk.sh '
+    'threads={threads} '
     'in=stdin.fastq '
     'int=t '
     'out={output.R1} '
