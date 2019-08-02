@@ -3,20 +3,21 @@
 #map ogbf numbers to samples names so that in future can refer to sample names
 
 def resolve_input_reads(wildcards):
-  sample_number = sample_name_to_ogbf_number[wildcards.sample]
+  barcode_number = sample_name_to_ogbf_number[wildcards.sample]
+  library_number = barcode_number if barcode_number <= 5 else barcode_number - 1
   return({
   'L1R1': ('data/reads/H2NVLBCX3-4261-'
-           f'{sample_number:02}-01-01_'
-           f'S{sample_number}_L001_R1_001.fastq.gz'),
+           f'{barcode_number:02}-01-01_'
+           f'S{library_number}_L001_R1_001.fastq.gz'),
   'L1R2': ('data/reads/H2NVLBCX3-4261-'
-           f'{sample_number:02}-01-01_'
-           f'S{sample_number}_L001_R2_001.fastq.gz'),
+           f'{barcode_number:02}-01-01_'
+           f'S{library_number}_L001_R2_001.fastq.gz'),
   'L2R1': ('data/reads/H2NVLBCX3-4261-'
-           f'{sample_number:02}-01-01_'
-           f'S{sample_number}_L002_R1_001.fastq.gz'),
+           f'{barcode_number:02}-01-01_'
+           f'S{library_number}_L002_R1_001.fastq.gz'),
   'L2R2': ('data/reads/H2NVLBCX3-4261-'
-           f'{sample_number:02}-01-01_'
-           f'S{sample_number}_L002_R2_001.fastq.gz')})
+           f'{barcode_number:02}-01-01_'
+           f'S{library_number}_L002_R2_001.fastq.gz')})
 
 sample_name_to_ogbf_number = {
   'AI': 1,
