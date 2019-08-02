@@ -39,11 +39,40 @@ sample_name_to_ogbf_number = {
   'H3b': 16}
 
 bbmap = 'shub://TomHarrop/singularity-containers:bbmap_38.50b'
+salmon = 'local_containers/salmon_0.14.1.sif'
+salmontools = 'local_containers/salmontools_23eac84.sif'
 
 rule target:
   input:
-    expand('output/010_trimmed/{sample}_R1.fq.gz', 
+    expand('output/030_salmon/{sample}/quant.sf', 
            sample=list(sample_name_to_ogbf_number.keys()))
+
+rule quantification:
+  input:
+    R1='output/010_trimmed/{sample}_R1.fq.gz',
+    R2='output/010_trimmed/{sample}_R2.fq.gz',
+    index='output/005_index'
+  output:
+    'output/030_salmon/{sample}/quant.sf'
+  params:
+    outdir='output/030_salmon/{sample}'
+  log:
+    'output/logs/030_salmon/{sample}.log'
+  threads:
+    multiprocessing.cpu_count()
+  singularity:
+    salmon
+  shell:
+    'salmon quant '
+    '--libType ISR '
+    '--index {input.index} '
+    '--mates1 {input.R1} '
+    '--mates2 {input.R2} '
+    '--output {params.outdir} '
+    '--threads {threads} '
+    '--validateMappings '
+    '--gcBias '
+    '&> {log} '
 
 rule trim_adaptors:
   input:
@@ -90,3 +119,50 @@ rule merge_lanes:
     'cat {input.L1R1} {input.L2R1} > {output.R1} & '
     'cat {input.L1R2} {input.L2R2} > {output.R2} & '
     'wait'
+
+rule generate_index:
+    input:
+        transcriptome = 'output/020_ref/gentrome.fa',
+        decoys = 'output/020_ref/decoys.txt'
+    output:
+        directory('output/005_index')
+    log:
+        'output/logs/005_index/generate_index.log'
+    threads:
+        multiprocessing.cpu_count()
+    singularity:
+        salmon
+    shell:
+        'salmon index '
+        '--transcripts {input.transcriptome} '
+        '--index {output} '
+        '--threads {threads} '
+        '--decoys {input.decoys} '
+        '&> {log}'
+
+rule generate_decoy_trancriptome:
+    input:
+        fasta = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.fna',
+        transcriptome = 'data/ref/GCF_003254395.2_Amel_HAv3.1_rna.fna',
+        gff = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.gff'
+    output:
+        'output/020_ref/gentrome.fa',
+        'output/020_ref/decoys.txt'
+    params:
+        outdir = 'output/020_ref'
+    log:
+        'output/logs/020_ref/generate_decoy_trancriptome.log'
+    threads:
+        multiprocessing.cpu_count()
+    singularity:
+        salmontools
+    shell:
+        'generateDecoyTranscriptome.sh '
+        '-j {threads} '
+        '-b /usr/bin/bedtools '
+        '-m /usr/local/bin/mashmap '
+        '-a {input.gff} '
+        '-g {input.fasta} '
+        '-t {input.transcriptome} '
+        '-o {params.outdir} '
+        '&> {log}'
