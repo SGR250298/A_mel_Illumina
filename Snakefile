@@ -57,10 +57,10 @@ rule Generate_DESeq_object:
     dds = 'output/040_DESeq/dds.Rds'
   log:
     'output/logs/Generate_DESeq_object.log'
-  script:
-    'source/Generate_DESeq_object.R'
   singularity:
     bioconductor
+  script:
+    'source/Generate_DESeq_object.R'
 
 rule quantification:
   input:
