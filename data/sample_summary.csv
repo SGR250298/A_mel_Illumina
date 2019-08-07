@@ -1,0 +1,16 @@
+﻿sample,hive_number,hive_location,exposure_status,caste
+H1,1,Raglan,organic,forager
+H1b,1,Raglan,organic,forager
+H2b,2,Raglan,organic,forager
+H3b,3,Raglan,organic,forager
+AI,1,Raglan,pyrethroid,queen
+AI_b,1,Raglan,pyrethroid,queen
+H1_BF,1,Dunedin,pyrethroid,forager
+H1_BYc,1,Dunedin,pyrethroid,unexposed
+H3_BF,3,Dunedin,pyrethroid,forager
+H2_OxFc,2,Dunedin,oxalic acid,forager
+H2_OxY,2,Dunedin,oxalic acid,unexposed
+H3_A2,3,Waihi,oxalic acid,forager
+H3_N3,3,Waihi,oxalic acid,unexposed
+H5_A4,5,Waihi,oxalic acid,forager
+H5_N3,5,Waihi,oxalic acid,unexposed

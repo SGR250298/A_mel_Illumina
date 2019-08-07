@@ -41,11 +41,27 @@ sample_name_to_ogbf_number = {
 bbmap = 'shub://TomHarrop/singularity-containers:bbmap_38.50b'
 salmon = 'local_containers/salmon_0.14.1.sif'
 salmontools = 'local_containers/salmontools_23eac84.sif'
+bioconductor = 'local_containers/bioconductor_3.9.sif'
 
 rule target:
   input:
     expand('output/030_salmon/{sample}/quant.sf', 
            sample=list(sample_name_to_ogbf_number.keys()))
+
+rule Generate_DESeq_object:
+  input:
+    quant_files=expand('output/030_salmon/{sample}/quant.sf',
+                      sample=list(sample_name_to_ogbf_number.keys())),
+     gff = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.gff',
+     sample_summary = 'data/sample_summary.csv'
+  output:
+    dds = 'output/040_DESeq/dds.Rds'
+  log:
+    'output/logs/Generate_DESeq_object.log'
+  script:
+    'source/Generate_DESeq_object.R'
+  singularity:
+    bioconductor
 
 rule quantification:
   input:
