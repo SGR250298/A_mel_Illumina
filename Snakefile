@@ -45,8 +45,7 @@ bioconductor = 'local_containers/bioconductor_3.9.sif'
 
 rule target:
   input:
-    expand('output/030_salmon/{sample}/quant.sf', 
-           sample=list(sample_name_to_ogbf_number.keys()))
+    dds = 'output/040_DESeq/dds.Rds'
 
 rule Generate_DESeq_object:
   input:
