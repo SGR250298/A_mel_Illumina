@@ -1,16 +1,16 @@
-﻿sample,hive_number,hive_location,exposure_status,caste
-H1,1,Raglan,organic,forager
-H1b,1,Raglan,organic,forager
-H2b,2,Raglan,organic,forager
-H3b,3,Raglan,organic,forager
-AI,1,Raglan,pyrethroid,queen
-AI_b,1,Raglan,pyrethroid,queen
-H1_BF,1,Dunedin,pyrethroid,forager
-H1_BYc,1,Dunedin,pyrethroid,unexposed
-H3_BF,3,Dunedin,pyrethroid,forager
-H2_OxFc,2,Dunedin,oxalic acid,forager
-H2_OxY,2,Dunedin,oxalic acid,unexposed
-H3_A2,3,Waihi,oxalic acid,forager
-H3_N3,3,Waihi,oxalic acid,unexposed
-H5_A4,5,Waihi,oxalic acid,forager
-H5_N3,5,Waihi,oxalic acid,unexposed
+﻿sample,hive_number,hive_location,exposure_status,caste,RIN,PCR_cycles
+H1,1,Raglan,organic,forager,6.8,15
+H1b,1,Raglan,organic,forager,8.2,15
+H2b,2,Raglan,organic,forager,7.6,15
+H3b,3,Raglan,organic,forager,7.7,15
+AI,1,Raglan,pyrethroid,queen,6.3,15
+AI_b,1,Raglan,pyrethroid,queen,8.2,15
+H1_BF,1,Dunedin,pyrethroid,forager,9.1,43
+H1_BYc,1,Dunedin,pyrethroid,unexposed,8.1,29
+H3_BF,3,Dunedin,pyrethroid,forager,9.7,15
+H2_OxFc,2,Dunedin,oxalic_acid,forager,9.8,15
+H2_OxY,2,Dunedin,oxalic_acid,unexposed,9.9,15
+H3_A2,3,Waihi,oxalic_acid,forager,6.1,15
+H3_N3,3,Waihi,oxalic_acid,unexposed,5.8,15
+H5_A4,5,Waihi,oxalic_acid,forager,5.8,15
+H5_N3,5,Waihi,oxalic_acid,unexposed,4.9,15
