@@ -42,6 +42,7 @@ bbmap = 'shub://TomHarrop/singularity-containers:bbmap_38.50b'
 salmon = 'local_containers/salmon_0.14.1.sif'
 salmontools = 'local_containers/salmontools_23eac84.sif'
 bioconductor = 'local_containers/bioconductor_3.9.sif'
+hmmer = 'shub://TomHarrop/singularity-containers:hmmer_3.2.1'
 
 rule target:
   input:
@@ -181,6 +182,26 @@ rule generate_decoy_trancriptome:
         '-t {input.transcriptome} '
         '-o {params.outdir} '
         '&> {log}'
+
+rule hmmer_search:
+  input:
+    hmm = 'data/P450.hmm',
+    proteome = 'data/ref/GCF_003254395.2_Amel_HAv3.1_protein.faa'
+  output:
+    'output/P450_list/P450_hmm.txt'
+  log:
+    'output/logs/hmmer_search.log'
+  threads:
+    multiprocessing.cpu_count()
+  singularity:
+    hmmer
+  shell:
+    'hmmsearch '
+    '--tblout {output} '
+    '--cpu {threads} '
+    '{input.hmm} '
+    '{input.proteome} '
+    '&>{log} '
 
 rule subset_proteome:
   input:
