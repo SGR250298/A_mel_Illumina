@@ -183,6 +183,19 @@ rule generate_decoy_trancriptome:
         '-o {params.outdir} '
         '&> {log}'
 
+rule P450_compilation:
+  input:
+    gff = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.gff',
+    gene_list = 'output/P450_list/Amel_P450_proteins.txt'
+  output:
+    P450_list = 'output/P450_list/P450_compilation.txt'
+  log:
+    'output/logs/P450_compilation.log'
+  singularity:
+    bioconductor
+  script:
+    'source/P450_compilation.R'
+
 rule isolate_hmmer:
   input:
     'output/P450_list/P450_hmm.txt'
