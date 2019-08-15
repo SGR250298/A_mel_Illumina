@@ -194,6 +194,7 @@ rule subset_proteome:
     bbmap
   shell:
     'filterbyname.sh '
+    'ignorejunk=t '
     'in={input.proteome} '
     'names={input.P450_results} '
     'include=t '
