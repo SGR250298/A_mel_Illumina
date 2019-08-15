@@ -182,6 +182,25 @@ rule generate_decoy_trancriptome:
         '-o {params.outdir} '
         '&> {log}'
 
+rule subset_proteome:
+  input:
+    proteome = 'data/ref/GCF_003254395.2_Amel_HAv3.1_protein.faa',
+    P450_results = 'output/P450_list/P450_genes.txt'
+  output:
+    'output/P450_list/P450_aa.fasta'
+  log:
+    'output/logs/subset_proteome.log'
+  singularity:
+    bbmap
+  shell:
+    'filterbyname.sh '
+    'in={input.proteome} '
+    'names={input.P450_results} '
+    'include=t '
+    'prefix=t '
+    'out={output} '
+    '2>{log} '
+
 rule P450_search:
   input:
     gff = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.gff'
