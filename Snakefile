@@ -183,6 +183,17 @@ rule generate_decoy_trancriptome:
         '-o {params.outdir} '
         '&> {log}'
 
+rule isolate_hmmer:
+  input:
+    'output/P450_list/P450_hmm.txt'
+  output:
+    gene_list = 'output/P450_list/Amel_P450_proteins.txt'
+  singularity:
+    hmmer
+  shell:
+    'grep -v "^#" {input} | cut -d\  -f1 | sort | uniq '
+    '>{output.gene_list} '
+
 rule hmmer_search:
   input:
     hmm = 'data/P450.hmm',
