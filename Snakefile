@@ -181,3 +181,15 @@ rule generate_decoy_trancriptome:
         '-t {input.transcriptome} '
         '-o {params.outdir} '
         '&> {log}'
+
+rule P450_search:
+  input:
+    gff = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.gff'
+  output:
+    P450_results = 'output/P450_list/P450_genes.txt'
+ log:
+    'output/logs/P450_search.log'
+  singularity:
+    bioconductor
+  script:
+    'source/P450_search.R'
