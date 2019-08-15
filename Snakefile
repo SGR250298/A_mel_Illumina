@@ -187,7 +187,7 @@ rule P450_search:
     gff = 'data/ref/GCF_003254395.2_Amel_HAv3.1_genomic.gff'
   output:
     P450_results = 'output/P450_list/P450_genes.txt'
- log:
+  log:
     'output/logs/P450_search.log'
   singularity:
     bioconductor
