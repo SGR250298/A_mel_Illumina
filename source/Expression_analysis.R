@@ -51,20 +51,33 @@ dds_treatment <- DESeq(dds_treatment)
 plotMA(dds_treatment)
 res <- results(dds_treatment,contrast = c("exposure_status","pyrethroid","organic"),lfcThreshold = 1,alpha = 0.1)
 subset(res,padj<0.1 & rownames(res) %in% P450)
-plotCounts(dds_treatment,"LOC551197",intgroup ="exposure_status")
-
-#P450 heatmap
-topVarGenes <- head(order(rowVars(assay(vst_lrt)), decreasing = TRUE), 50)
-sig_genes <- rownames(res_lrt[order(res_lrt$padj),][1:50,])
-mat  <- assay(vst_lrt)[ rownames(vst_lrt) %in% P450, ]
-mat  <- t(scale(t(mat),center = TRUE))
-hc <- hclust(dist(mat,method = "minkowski"),method = "ward.D2")
-gene_order <- hc$labels[hc$order]
+plotCounts(dds_treatment,
+           "LOC107965400",intgroup ="exposure_status", 
+           main = "LOC107965400: Cytochrome P450 6a14", xlab = "Exposure Status",
+           pch = 19)
+plotCounts(dds_treatment,
+                        "LOC552418",intgroup ="exposure_status", 
+                        main = "LOC552418: Cytochrome P450 6k1", xlab = "Exposure Status",
+                        pch = 19)
+plotCounts(dds_treatment,
+           "LOC725159",intgroup ="exposure_status", 
+           main = "LOC725159: Cytochrome P450 6a14", xlab = "Exposure Status",
+           pch = 19)
+plotCounts(dds_treatment,
+           "LOC100577883",intgroup ="exposure_status", 
+           main = "LOC100577883: Cytochrome P450 4aa1-like", xlab = "Exposure Status",
+           pch = 19)
 anno <- as.data.frame(colData(vst_lrt)[, c("caste","exposure_status")])
 anno_dt <- data.table(anno, keep.rownames = TRUE)
 anno_dt[,rn:= factor(rn, levels = sample_order)]
 anno_dt[,Xcol:= Set1[as.numeric(as.factor(exposure_status))]]
 setkey(anno_dt, rn)
+
+#P450 heatmap
+mat  <- assay(vst_lrt)[ rownames(vst_lrt) %in% P450, ]
+mat  <- t(scale(t(mat),center = TRUE))
+hc <- hclust(dist(mat,method = "minkowski"),method = "ward.D2")
+gene_order <- hc$labels[hc$order]
 mat_long <- as.data.table(melt(mat))
 mat_long[,Var2:= factor(as.character(Var2),levels=sample_order)]
 mat_long[,Var1:= factor(as.character(Var1),levels=gene_order)]
@@ -75,26 +88,23 @@ P450_heatmap <- ggplot(mat_long, aes(x=Var2, y=Var1, fill=value)) +
   ylab(NULL) +
   theme_minimal(base_size = 10, base_family = "Times") +
   theme(axis.text.x = element_text(colour = anno_dt[,Xcol]),axis.text.y = element_text(face = "italic"))
-ggsave("P450.pdf",P450_heatmap,width = 150, height = 150, units = "mm")
+ggsave("P450.jpg",P450_heatmap,width = 150, height = 150, units = "mm")
 
 #General Heatmap
-mat2  <- assay(vst_lrt)[ rownames(vst_lrt) ]
-mat2  <- t(scale(t(mat2),center = TRUE))
-hc2 <- hclust(dist(mat2,method = "minkowski"),method = "ward.D2")
-gene_order2 <- hc2$labels[hc2$order]
-anno2 <- as.data.frame(colData(vst_lrt)[, c("caste","exposure_status")])
-anno_dt2 <- data.table(anno2, keep.rownames = TRUE)
-anno_dt2[,rn:= factor(rn, levels = sample_order)]
-anno_dt2[,Xcol:= Set1[as.numeric(as.factor(exposure_status))]]
-setkey(anno_dt2, rn)
-mat_long2 <- as.data.table(melt(mat2))
-mat_long2[,Var2:= factor(as.character(Var2),levels=sample_order)]
-mat_long2[,Var1:= factor(as.character(Var1),levels=gene_order)]
-General_heatmap <- ggplot(mat_long2, aes(x=Var2, y=Var1, fill=value)) + 
+topVarGenes <- head(order(rowVars(assay(vst_lrt)), decreasing = TRUE), 50)
+sig_genes <- rownames(res_lrt[order(res_lrt$padj),][1:50,])
+mat  <- assay(vst_lrt)[ sig_genes, ]
+mat  <- t(scale(t(mat),center = TRUE))
+hc <- hclust(dist(mat,method = "minkowski"),method = "ward.D2")
+gene_order <- hc$labels[hc$order]
+mat_long <- as.data.table(melt(mat))
+mat_long[,Var2:= factor(as.character(Var2),levels=sample_order)]
+mat_long[,Var1:= factor(as.character(Var1),levels=gene_order)]
+general_heatmap <- ggplot(mat_long, aes(x=Var2, y=Var1, fill=value)) + 
   geom_raster() + 
   scale_fill_viridis_c(guide = guide_colourbar(title = "Transformed\nRead Counts")) + 
   xlab(NULL) + 
   ylab(NULL) +
   theme_minimal(base_size = 10, base_family = "Times") +
   theme(axis.text.x = element_text(colour = anno_dt[,Xcol]),axis.text.y = element_text(face = "italic"))
-ggsave("General.pdf",P450_heatmap,width = 150, height = 150, units = "mm")
+ggsave("general_heatmap.jpg",P450_heatmap,width = 150, height = 150, units = "mm")
