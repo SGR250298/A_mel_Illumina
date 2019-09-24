@@ -72,11 +72,11 @@ plotCounts(dds_treatment,
            main = "CYP9Q1", xlab = "Exposure Status",
            pch = 19)
 plotCounts(dds_treatment,
-           "LOC408453",intgroup ="exposure_status", 
+           "LOC408452",intgroup ="exposure_status", 
            main = "CYP9Q2", xlab = "Exposure Status",
            pch = 19)
 plotCounts(dds_treatment,
-           "LOC408452",intgroup ="exposure_status", 
+           "LOC408453",intgroup ="exposure_status", 
            main = "CYP9Q3", xlab = "Exposure Status",
            pch = 19)
 anno <- as.data.frame(colData(vst_lrt)[, c("caste","exposure_status")])
