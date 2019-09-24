@@ -67,6 +67,18 @@ plotCounts(dds_treatment,
            "LOC100577883",intgroup ="exposure_status", 
            main = "LOC100577883: Cytochrome P450 4aa1-like", xlab = "Exposure Status",
            pch = 19)
+plotCounts(dds_treatment,
+           "LOC410492",intgroup ="exposure_status", 
+           main = "CYP9Q1", xlab = "Exposure Status",
+           pch = 19)
+plotCounts(dds_treatment,
+           "LOC408453",intgroup ="exposure_status", 
+           main = "CYP9Q2", xlab = "Exposure Status",
+           pch = 19)
+plotCounts(dds_treatment,
+           "LOC408452",intgroup ="exposure_status", 
+           main = "CYP9Q3", xlab = "Exposure Status",
+           pch = 19)
 anno <- as.data.frame(colData(vst_lrt)[, c("caste","exposure_status")])
 anno_dt <- data.table(anno, keep.rownames = TRUE)
 anno_dt[,rn:= factor(rn, levels = sample_order)]
