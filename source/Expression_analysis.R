@@ -119,4 +119,4 @@ general_heatmap <- ggplot(mat_long, aes(x=Var2, y=Var1, fill=value)) +
   ylab(NULL) +
   theme_minimal(base_size = 10, base_family = "Times") +
   theme(axis.text.x = element_text(colour = anno_dt[,Xcol]),axis.text.y = element_text(face = "italic"))
-ggsave("general_heatmap.jpg",P450_heatmap,width = 150, height = 150, units = "mm")
+ggsave("general_heatmap.jpg",general_heatmap,width = 150, height = 150, units = "mm")
