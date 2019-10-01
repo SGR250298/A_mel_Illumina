@@ -40,17 +40,20 @@ PCA_mod <- merge(PCA_plot,vst_table)
 sample_table <- data.table(data.frame(colData(dds_lrt)),keep.rownames = TRUE)
 plot_data <- merge(PCA_mod,sample_table,by='rn')
 plot_data[,f_lab:=paste0(variable,' ',round(percent_var,1),'%')]
-ggplot(plot_data[percent_var>5],aes(x=exposure_status,y=value,colour=hive_location))+geom_point()+facet_wrap(~f_lab)
+geographic_confounding <- ggplot(plot_data[percent_var>10],aes(x=exposure_status,y=value,colour=hive_location,shape=caste))+geom_point()+facet_wrap(~f_lab)
+ggsave("geographic_confounding.jpg",geographic_confounding,width = 100, height = 75, units = "mm")
 
 #DE test
 dds_treatment <- copy(dds_filtered)
+dds_treatment$exposure_status [dds_treatment$exposure_status != "organic"] <- "treated"
 dds_treatment$exposure_status <- factor(dds_treatment$exposure_status)
 dds_treatment$caste <- factor(dds_treatment$caste)
 design(dds_treatment) <- ~exposure_status
 dds_treatment <- DESeq(dds_treatment)
 plotMA(dds_treatment)
-res <- results(dds_treatment,contrast = c("exposure_status","pyrethroid","organic"),lfcThreshold = 1,alpha = 0.1)
-subset(res,padj<0.1 & rownames(res) %in% P450)
+res <- results(dds_treatment,contrast = c("exposure_status","treated","organic"),lfcThreshold = 1,alpha = 0.1)
+res ["LOC413995",]
+subset(res,padj<0.05 & rownames(res) %in% P450)
 plotCounts(dds_treatment,
            "LOC107965400",intgroup ="exposure_status", 
            main = "LOC107965400: Cytochrome P450 6a14", xlab = "Exposure Status",
